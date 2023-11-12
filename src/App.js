@@ -7,6 +7,8 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './components/Home';
 import Cart from './components/Cart';
+import Cancel from './components/Cancel'
+import Success from './components/Success'
 import Checkout from './components/Checkout';
 import Products from './components/Products';
 import ProductDetail from './components/ProductDetail';
@@ -30,6 +32,8 @@ function App() {
         <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={cartItems.length > 0 ? <Checkout/> : <Navigate to="/" />} />
+        <Route path="/checkout/success" element={<Success/>} />
+        <Route path="/checkout/cancel" element={<Cancel/>} />
       </Routes>
      <Footer ref={bottomRef}/>
     </>

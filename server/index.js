@@ -7,6 +7,42 @@ const app = express();
 app.use(cors());
 app.use(express.json())
 
+app.post("/create-payment-intent", async(req, res) => {
+  if(!req.body) return;
+
+  let lineItems = [];
+
+  lineItems = req.body.items?.map((item => {
+    return {
+      price_data: {
+        currency: "usd",
+        product_data: {
+          name: item.name,
+        },
+        unit_amount: Math.round(item.price * 100)
+      },
+      quantity: item.amount,
+    }
+  }))
+
+  try {
+    const paymentIntent = await stripe.paymentIntents.create({
+      currency: 'usd',
+      amount: Math.round(req.body.amount * 100)
+    })
+    
+    res.send({clientSecret: paymentIntent.client_secret})
+
+  } catch(e) {
+    console.log(e.message);
+    return res.status(400).send({
+      error: {
+        message: e.message
+      }
+    })
+  }
+})
+
 app.post("/checkout", async (req, res) => {
 
   if(!req.body) return;
@@ -79,7 +115,7 @@ app.post("/checkout", async (req, res) => {
     ],
     line_items: lineItems,
     success_url : `${process.env.PUBLIC_URL}/checkout/success`,
-    cancel_url : `${process.env.PUBLIC_URL}`,
+    cancel_url : `${process.env.PUBLIC_URL}/checkout/cancel`,
   })
 
   res.send(JSON.stringify({

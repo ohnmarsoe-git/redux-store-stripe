@@ -5,7 +5,8 @@ import { Link } from "react-router-dom";
 import CartItem from "./CartItem";
 
 const Cart = () => {
-  const { cartItems, total } = useSelector((store) => store.cart);
+  const { cartItems, total, amount } = useSelector((store) => store.cart);
+  console.log(amount);
 
   const dispatch = useDispatch();
 
@@ -32,7 +33,7 @@ const Cart = () => {
                         name={item.name}
                         image={item.image}
                         price={item.price}
-                        amount={item.amount}
+                        amount={amount > 0 ? amount : item.amount}
                       />
                     ))
                   ) : (

@@ -17,11 +17,11 @@ export const cartSlice = createSlice({
 
       if(existingItem) {
         return {
-          cartItems: state.cartItems.map((item) => item.id === existingItem.id ? newItem : item)
+          cartItems: state.cartItems.map((item) => item.id === existingItem.id ? {...item, amount: item.amount + 1} : item)
         }
       }
-
-      return {cartItems: [...state.cartItems, newItem]}
+      
+      return { cartItems: [...state.cartItems, newItem]}
     },
     
     increamentCart: (state,{payload}) => {
